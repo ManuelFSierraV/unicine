@@ -2,10 +2,8 @@ package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 
 @Entity
@@ -21,7 +19,10 @@ public class Administrador implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Email
+    @Column(unique = true, length = 150)
     private String email;
 
+    @Column(nullable = false, length = 50)
     private String password;
 }

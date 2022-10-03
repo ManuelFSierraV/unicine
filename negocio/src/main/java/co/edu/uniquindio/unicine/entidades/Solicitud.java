@@ -19,6 +19,7 @@ public class Solicitud implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Column(nullable = false)
     private String tipo;
 
     private String descripcion;

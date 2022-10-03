@@ -3,6 +3,7 @@ package co.edu.uniquindio.unicine.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 
 @Entity
@@ -19,10 +20,13 @@ public class Boleta implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @PositiveOrZero
     private float precio;
 
+    @Column(length = 15)
     private String fila;
 
+    @Column(length = 15)
     private String columna;
 
     @ManyToOne

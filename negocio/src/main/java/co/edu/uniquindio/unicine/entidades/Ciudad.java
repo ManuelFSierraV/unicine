@@ -20,6 +20,7 @@ public class Ciudad implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Column(nullable = false, length = 100)
     private String nombre;
 
     @OneToMany(mappedBy = "ciudad")

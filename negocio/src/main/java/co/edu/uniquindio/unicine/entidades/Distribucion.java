@@ -3,6 +3,7 @@ package co.edu.uniquindio.unicine.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,10 +24,13 @@ public class Distribucion implements Serializable {
 
     private String esquema;
 
-    private String totalSillas;
+    @PositiveOrZero
+    private Integer totalSillas;
 
+    @Column(length = 15)
     private String filas;
 
+    @Column(length = 15)
     private String columnas;
 
     @OneToMany(mappedBy = "distribucion")

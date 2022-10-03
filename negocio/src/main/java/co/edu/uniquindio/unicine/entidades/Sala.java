@@ -20,6 +20,7 @@ public class Sala implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Column(nullable = false, length = 50)
     private String nombre;
 
     @ManyToOne

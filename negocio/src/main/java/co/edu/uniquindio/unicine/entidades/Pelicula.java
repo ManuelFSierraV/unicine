@@ -20,6 +20,7 @@ public class Pelicula implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Column(nullable = false,length = 100)
     private String nombre;
 
     private String urlImagen;

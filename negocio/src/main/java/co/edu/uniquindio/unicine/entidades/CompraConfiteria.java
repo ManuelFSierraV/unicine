@@ -3,6 +3,7 @@ package co.edu.uniquindio.unicine.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 
 @Entity
@@ -19,8 +20,10 @@ public class CompraConfiteria implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @PositiveOrZero
     private float precio;
 
+    @PositiveOrZero
     private Integer unidades;
 
     @ManyToOne

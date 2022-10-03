@@ -3,6 +3,7 @@ package co.edu.uniquindio.unicine.entidades;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class Confiteria implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
+    @Column(nullable = false, length = 150)
     private String nombreProducto;
 
     private String descripcion;
 
-    private String precio;
+    @PositiveOrZero
+    private float precio;
 
     private String url_imagen;
 
