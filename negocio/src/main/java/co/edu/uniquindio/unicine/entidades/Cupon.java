@@ -31,4 +31,11 @@ public class Cupon implements Serializable {
 
     @OneToMany(mappedBy = "cupon")
     private List<CuponCliente> cuponClientes;
+
+    public Cupon(String descripcion, String descuento, String estado, LocalDateTime fechaVencimiento) {
+        this.descripcion = descripcion;
+        this.descuento = descuento;
+        this.estado = estado;
+        this.fechaVencimiento = fechaVencimiento;
+    }
 }

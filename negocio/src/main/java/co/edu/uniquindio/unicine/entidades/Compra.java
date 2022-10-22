@@ -28,8 +28,7 @@ public class Compra implements Serializable {
     @Enumerated(EnumType.STRING)
     private MedioPago medioPago;
 
-    @PositiveOrZero
-    private int valorTotal;
+    private float valorTotal;
 
     @ManyToOne
     private Funcion funcion;
@@ -46,4 +45,11 @@ public class Compra implements Serializable {
     @OneToOne(mappedBy = "compra")
     private CuponCliente cuponCliente;
 
+    public Compra(MedioPago medioPago, Funcion funcion, Cliente cliente, CuponCliente cuponCliente) {
+        this.medioPago = medioPago;
+        this.fecha = LocalDateTime.now();
+        this.funcion = funcion;
+        this.cliente = cliente;
+        this.cuponCliente = cuponCliente;
+    }
 }

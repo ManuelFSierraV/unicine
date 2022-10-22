@@ -29,4 +29,9 @@ public class CuponCliente implements Serializable {
 
     @ManyToOne
     private Cliente cliente;
+
+    public CuponCliente(String estado, Cupon cupon) {
+        this.estado = estado;
+        this.cupon = cupon;
+    }
 }

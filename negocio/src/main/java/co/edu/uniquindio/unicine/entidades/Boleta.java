@@ -31,4 +31,10 @@ public class Boleta implements Serializable {
 
     @ManyToOne
     private Compra compra;
+
+    public Boleta(String fila, String columna, Compra compra) {
+        this.fila = fila;
+        this.columna = columna;
+        this.compra = compra;
+    }
 }

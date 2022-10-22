@@ -26,4 +26,10 @@ public class Solicitud implements Serializable {
 
     @ManyToOne
     private Cliente cliente;
+
+    public Solicitud(String tipo, String descripcion, Cliente cliente) {
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.cliente = cliente;
+    }
 }

@@ -21,4 +21,8 @@ public class Telefono implements Serializable {
 
     @ManyToOne
     private Cliente cliente;
+
+    public Telefono(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }

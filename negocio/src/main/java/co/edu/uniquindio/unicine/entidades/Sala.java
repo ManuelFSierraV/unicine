@@ -32,4 +32,12 @@ public class Sala implements Serializable {
     @OneToMany(mappedBy = "sala")
     private List<Funcion> funciones;
 
+    @OneToMany(mappedBy = "sala")
+    private List<FechaEspecial> fechaEspeciales;
+
+    public Sala(String nombre, Teatro teatro, Distribucion distribucion) {
+        this.nombre = nombre;
+        this.teatro = teatro;
+        this.distribucion = distribucion;
+    }
 }

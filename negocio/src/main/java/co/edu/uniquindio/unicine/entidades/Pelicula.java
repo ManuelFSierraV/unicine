@@ -20,7 +20,7 @@ public class Pelicula implements Serializable {
     @EqualsAndHashCode.Include
     private Integer codigo;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
     private String urlImagen;
@@ -33,9 +33,20 @@ public class Pelicula implements Serializable {
 
     private String estado;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
-    private  Genero genero;
+    private List<Genero>  genero;
 
     @OneToMany(mappedBy = "pelicula")
     private List<Funcion> funciones;
+
+    public Pelicula(String nombre, String urlImagen, String urlTrailer, String sinopsis, String reparto, String estado, List<Genero> genero) {
+        this.nombre = nombre;
+        this.urlImagen = urlImagen;
+        this.urlTrailer = urlTrailer;
+        this.sinopsis = sinopsis;
+        this.reparto = reparto;
+        this.estado = estado;
+        this.genero = genero;
+    }
 }

@@ -25,4 +25,9 @@ public class Administrador implements Serializable {
 
     @Column(nullable = false, length = 50)
     private String password;
+
+    public Administrador(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

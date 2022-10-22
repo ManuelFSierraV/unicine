@@ -39,14 +39,26 @@ public class Cliente implements Serializable {
     private Boolean estado;
 
     @OneToMany(mappedBy = "cliente")
-    private List<Compra> compraList;
+    private List<Compra> compras;
 
     @OneToMany(mappedBy = "cliente")
-    private List<CuponCliente> cuponClienteList;
+    private List<CuponCliente> cuponesCliente;
 
     @OneToMany(mappedBy = "cliente")
     private List<Solicitud> solicitudes;
 
     @OneToMany(mappedBy = "cliente")
     private List<Telefono> telefonos;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<FechaEspecial> fechaEspeciales;
+
+    public Cliente(String cedula, String nombre, String email, String url_foto, String password) {
+        this.cedula = cedula;
+        this.nombre = nombre;
+        this.email = email;
+        this.url_foto = url_foto;
+        this.password = password;
+        this.estado = false;
+    }
 }
