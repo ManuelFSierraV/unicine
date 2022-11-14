@@ -15,7 +15,7 @@ public interface PeliculaRepo extends JpaRepository<Pelicula,Integer> {
 
 
 
-    Optional<Pelicula> findByNombrePelicula(String nombrePelicula);
+    Optional<Pelicula> findByNombre(String nombrePelicula);
 
     @Query("select p from Pelicula p where p.nombre like concat('%',:nombre,'%') and p.estado = :estado ")
     List<Pelicula> buscarPelicula(String nombre,String estado);
@@ -33,7 +33,7 @@ public interface PeliculaRepo extends JpaRepository<Pelicula,Integer> {
     Optional<Pelicula> buscarPeliculaEstado(String nombre, Boolean estado);
 
     @Query("select new co.edu.uniquindio.unicine.dto.HorarioSalaDto(f.horario,f.sala) from Pelicula p join p.funciones f where p.codigo = :codigoPelicula and " +
-            "f.sala.teatro.codigo = :codigoteatro")
+            "f.sala.teatro.codigo = :codigoTeatro")
     List<HorarioSalaDto> listarHorarios (Integer codigoPelicula, Integer codigoTeatro);
 
     @Query("select p from Pelicula p where :generoPelicula member of p.genero order by p.nombre asc")

@@ -4,11 +4,11 @@ import co.edu.uniquindio.unicine.entidades.Cliente;
 import co.edu.uniquindio.unicine.entidades.Compra;
 import co.edu.uniquindio.unicine.entidades.Cupon;
 import co.edu.uniquindio.unicine.entidades.Solicitud;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public interface ClienteRepo extends JpaRepository<Cliente,String> {
     Cliente comprobarAutenticacion (String email, String password);
 
     @Query("select c from Cliente c where c.estado = :estado")
-    List<Cliente> obtenerPorEstado (Boolean estado, Pageable paginador);
+    List<Cliente> obtenerPorEstado (Pageable paginador,Boolean estado);
 
     @Query("select cup from Cliente cli join cli.cuponesCliente cup where cli.email = :email")
     List<Cupon> obtenerCupones (String email);
@@ -41,6 +41,7 @@ public interface ClienteRepo extends JpaRepository<Cliente,String> {
     @Query("select cliente.nombre, cliente.email, comp from Cliente cliente left join cliente.compras comp")
     List<Object[]> obtenerCompraTodos();
 
-    @Query("select s from Solicitud s, in(s.cliente.solicitudes)")
-    List<Solicitud> obtenerSolicitud();
+    @Query("select s from Solicitud s where s.cliente.cedula = :cedula ")
+    List<Solicitud> obtenerSolicitud(String cedula);
+
 }

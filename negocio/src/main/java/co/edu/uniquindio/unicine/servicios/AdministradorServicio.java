@@ -38,7 +38,7 @@ public interface AdministradorServicio {
 
     //----- Metodos CRUD pelicula -----
 
-    Pelicula crearPelicula (Pelicula pelicula);
+    Pelicula crearPelicula (Pelicula pelicula) throws Exception;
 
     Pelicula obtenerPelicula (Integer codigoPelicula) throws Exception;
 
@@ -50,7 +50,7 @@ public interface AdministradorServicio {
 
     //----- Metodos CRUD confiteria -----
 
-    Confiteria crearConfiteria (Confiteria confiteria);
+    Confiteria crearConfiteria (Confiteria confiteria) throws Exception;
 
     Confiteria obtenerConfiteria (Integer codigoConfiteria) throws Exception;
 

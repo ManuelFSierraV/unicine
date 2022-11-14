@@ -85,7 +85,7 @@ public class ClienteTest {
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerPorEstado(){
-        List<Cliente> listaClientes = clienteRepo.obtenerPorEstado(true, (Pageable) PageRequest.of(0,3));
+        List<Cliente> listaClientes = clienteRepo.obtenerPorEstado( PageRequest.of(0,3), true );
         listaClientes.forEach (System.out::println);
     }
 
@@ -141,7 +141,7 @@ public class ClienteTest {
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerSolicitudes(){
-        List<Solicitud> solicitudes = clienteRepo.obtenerSolicitud();
+        List<Solicitud> solicitudes = clienteRepo.obtenerSolicitud("222");
         solicitudes.forEach(System.out::println);
     }
 

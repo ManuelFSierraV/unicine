@@ -19,7 +19,7 @@ public class AdministradorTeatroServicioImpl implements AdministradorTeatroServi
     private final FuncionRepo funcionRepo;
     private final PeliculaRepo peliculaRepo;
 
-    public AdministradorTeatroServicioImpl(AdministradorTeatroRepo administradorTeatroRepo, HorarioRepo horarioRepo, TeatroRepo teatroRepo, SalaRepo salaRepo, FuncionRepo funcionRepo, PeliculaRepo peliculaRepo) {
+    public AdministradorTeatroServicioImpl(AdministradorTeatroRepo administradorTeatroRepo, HorarioRepo horarioRepo,TeatroRepo teatroRepo,SalaRepo salaRepo, FuncionRepo funcionRepo,PeliculaRepo peliculaRepo) {
         this.administradorTeatroRepo = administradorTeatroRepo;
         this.horarioRepo = horarioRepo;
         this.teatroRepo = teatroRepo;

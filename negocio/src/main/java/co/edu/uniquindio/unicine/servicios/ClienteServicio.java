@@ -36,9 +36,13 @@ public interface ClienteServicio {
 
     // ------- Realizar compra -------
 
-    Compra hacerCompra (Compra compra, Boleta boletas, CompraConfiteria compraConfiteria, MedioPago medioPago, Cupon cupon, Funcion funcion) throws Exception;
+    Compra hacerCompra (String cedula, List<Boleta> boletas, List<CompraConfiteria> compraConfiterias, MedioPago medioPago, Integer cuponCodigo,Integer funcionCodigo) throws Exception;
 
     // -------- Redimir Cupon --------
+
+
+    CuponCliente obtenerCuponSeleccionado(Cliente cliente,Integer codigo) throws Exception;
+
 
     boolean redimirCupon (Integer codigoCupon) throws Exception;
 

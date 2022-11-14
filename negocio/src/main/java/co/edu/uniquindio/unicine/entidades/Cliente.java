@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unicine.entidades;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,17 +23,21 @@ public class Cliente implements Serializable {
     @Id
     @EqualsAndHashCode.Include
     @Column(length = 20)
+    @Length(max = 20)
     private String cedula;
 
+    @Length(max = 100)
     @Column(nullable = false, length = 100)
     private String nombre;
 
     @Email
-    @Column(unique = true, length = 150)
+    @Length(max = 150)
+    @Column(unique = true, length = 150, nullable = false)
     private String email;
 
     private String url_foto;
 
+    @Length(max = 50)
     @Column(nullable = false, length = 50)
     private String password;
 

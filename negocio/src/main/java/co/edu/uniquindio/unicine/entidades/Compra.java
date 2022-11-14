@@ -28,7 +28,7 @@ public class Compra implements Serializable {
     @Enumerated(EnumType.STRING)
     private MedioPago medioPago;
 
-    private float valorTotal;
+    private double valorTotal;
 
     @ManyToOne
     private Funcion funcion;

@@ -33,11 +33,12 @@ public interface CompraRepo extends JpaRepository<Compra,Integer> {
     @Query("select c1,c1.cliente from Compra c1 where c1.valorTotal=(select max (c.valorTotal) from Compra c) ")
     List<Object[]> compraMasCostosa2();
 
-    @Query("select new co.edu.uniquindio.unicine.dto.InfoCompraDto(c.valorTotal,c.fecha,c.funcion," +
-            "(select sum (b.precio) from Boleta b where b.compra.codigo = c.codigo)," +
-            "(select sum(cc.precio*cc.unidades) from CompraConfiteria cc where cc.compra.codigo = c.codigo))" +
-            "from Compra c where c.cliente.cedula = :cedulaCliente")
-    List<InfoCompraDto>informacionCompra(String cedulaCliente);
+   // @Query("select new co.edu.uniquindio.unicine.dto.InfoCompraDto(c.valorTotal,c.fecha,c.funcion," +
+   //         "(select sum (b.precio) from Boleta b where b.compra.codigo = c.codigo)," +
+   //         "(select sum(cc.precio*cc.unidades) from CompraConfiteria cc where cc.compra.codigo = c.codigo))" +
+   //         "from Compra c where c.cliente.cedula = :cedulaCliente")
+   // List<InfoCompraDto>informacionCompra(String cedulaCliente);
+
 
     @Query("select c.funcion.pelicula, count (c)from Compra c where c.funcion.sala.teatro.ciudad.codigo = :codigoCiudad group by c.funcion.pelicula")
     List<Object[]> peliculaMasVista (Integer codigoCiudad);

@@ -4,7 +4,7 @@ import co.edu.uniquindio.unicine.entidades.*;
 import co.edu.uniquindio.unicine.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +18,12 @@ public class ClienteServicioImpl implements ClienteServicio{
     private final FechaEspecialRepo fechaEspecialRepo;
     private final CuponRepo cuponRepo;
     private final CuponClienteRepo cuponClienteRepo;
+    private final FuncionRepo funcionRepo;
+    private final BoletaRepo boletaRepo;
+    private final CompraConfiteriaRepo compraConfiteriaRepo;
+    private final CompraRepo compraRepo;
 
-    public ClienteServicioImpl(ClienteRepo clienteRepo, PeliculaRepo peliculaRepo, EmailServicio emailServicio, SolicitudRepo solicitudRepo, FechaEspecialRepo fechaEspecialRepo, CuponRepo cuponRepo, CuponClienteRepo cuponClienteRepo) {
+    public ClienteServicioImpl(ClienteRepo clienteRepo, PeliculaRepo peliculaRepo, EmailServicio emailServicio, SolicitudRepo solicitudRepo, FechaEspecialRepo fechaEspecialRepo, CuponRepo cuponRepo, CuponClienteRepo cuponClienteRepo, FuncionRepo funcionRepo, BoletaRepo boletaRepo, CompraConfiteriaRepo compraConfiteriaRepo, CompraRepo compraRepo) {
         this.clienteRepo = clienteRepo;
         this.peliculaRepo = peliculaRepo;
         this.emailServicio = emailServicio;
@@ -27,6 +31,10 @@ public class ClienteServicioImpl implements ClienteServicio{
         this.fechaEspecialRepo = fechaEspecialRepo;
         this.cuponRepo = cuponRepo;
         this.cuponClienteRepo = cuponClienteRepo;
+        this.funcionRepo = funcionRepo;
+        this.boletaRepo = boletaRepo;
+        this.compraConfiteriaRepo = compraConfiteriaRepo;
+        this.compraRepo = compraRepo;
     }
 
     //------------------------------------LOGIN----------------------------------------
@@ -43,7 +51,7 @@ public class ClienteServicioImpl implements ClienteServicio{
     //----------------------------------- BUSCAR PELICULA -------------------------------
     @Override
     public List<Pelicula> buscarPeliculaPorNombre(String nombre) throws Exception {
-        Optional<Pelicula> peliculaGuardada = peliculaRepo.findByNombrePelicula(nombre);
+        Optional<Pelicula> peliculaGuardada = peliculaRepo.findByNombre(nombre);
 
         if(peliculaGuardada.isEmpty()){
             throw new Exception("La pelicula NO EXISTE");
@@ -78,9 +86,9 @@ public class ClienteServicioImpl implements ClienteServicio{
         if(cedulaExiste){
             throw  new Exception("La cedula ingresada ya existe");
         }
-
-        emailServicio.enviarEmail("Registro de cuenta en UniCine", "Hola "+cliente.getNombre()+" ahora eres parte de la familia Unicine, para activar su cuenta click en el siguiente link: url", cliente.getEmail());
-        return clienteRepo.save(cliente);
+        Cliente registro = clienteRepo.save(cliente);
+        //emailServicio.enviarEmail("Registro de cuenta en UniCine", "Hola "+cliente.getNombre()+" ahora eres parte de la familia Unicine, para activar su cuenta click en el siguiente link: url", cliente.getEmail());
+        return registro;
     }
 
     private boolean esRepetido(String email){
@@ -139,30 +147,110 @@ public class ClienteServicioImpl implements ClienteServicio{
 
     //---------------------------------- HACER UNA COMPRA --------------------------------
     @Override
-    public Compra hacerCompra(Compra compra, Boleta boletas, CompraConfiteria compraConfiteria, MedioPago medioPago, Cupon cupon, Funcion funcion) throws Exception {
-        Compra compra1 = new Compra();
-        compra.setFecha(LocalDateTime.now());
+    public Compra hacerCompra(String cedula, List<Boleta> boletas, List<CompraConfiteria> compraConfiterias, MedioPago medioPago, Integer cuponCodigo,Integer funcionCodigo) throws Exception {
 
-        //verificar cliente,
+        Compra compra = new Compra();
+        Optional<Cliente> cliente = clienteRepo.findById(cedula);
+        Optional<Funcion> funcion = funcionRepo.findById(funcionCodigo);
+        Double valorEntradas = 0.0;
+        Double valorConfiterias = 0.0;
+        Double descuentoCompra = 0.0;
 
-        //verificar que las sillas esten disponibles
-
-        //redimir el cupon si no es null
-
-        Optional<Cupon> cuponExiste = cuponRepo.findById(cupon.getCodigo());
-        if (cuponExiste.isEmpty()){
-            throw new Exception("El cupon no existe");
+        if (cliente == null) {
+            throw new Exception("El cliente con la cedula" + cliente.get().getCedula() + "no existe");
         }
-        boolean cuponCliente =false ;
+        if (funcion == null) {
+            throw new Exception("La funcion con el codigo" + funcion.get().getCodigo() + "no existe");
+        }
+        if (medioPago == null) {
+            throw new Exception("Elija un medio de pago disponible");
+        }
+        if (boletas.isEmpty()) {
+            throw new Exception("La lista de boletas esta vacia");
+        }
+
+        boletas.forEach(entrada ->
+                entrada.setCompra(compra)
+        );
+        compra.setBoletas(boletas);
+        boletaRepo.saveAll(boletas);
+
+        if (!compraConfiterias.isEmpty()) {
+            for (int i = 0; i < compraConfiterias.size(); i++) {
+                compraConfiterias.get(i).setCompra(compra);
+                valorConfiterias += (compraConfiterias.get(i).getPrecio());
+            }
+            compra.getCompraConfiteriaList();
+            compraConfiteriaRepo.saveAll(compraConfiterias);
+        }
+
+        if (cuponCodigo != null) {
+            CuponCliente cupon = obtenerCuponSeleccionado(cliente.get(), cuponCodigo);
+            if (cupon != null) {
+                cupon.setCompra(compra);
+                compra.setCuponCliente(cupon);
+                cupon.setEstado(cupon.getEstado());
+                cuponClienteRepo.save(cupon);
+
+                Double porcentajeDescuento = (cupon.getCupon().getDescuento() / 100);
+                descuentoCompra = (valorConfiterias + valorEntradas) * porcentajeDescuento;
+            } else {
+                throw new Exception("El cliente no posee un cupon con codigo " + cuponCodigo);
+            }
+        }
 
 
-        //sumar los precios, aplicar el descuento
+        for (int i = 0; i < boletas.size(); i++) {
+            valorEntradas = (boletas.get(i).getPrecio()) + valorEntradas;
+        }
+        double valorTotal = (valorConfiterias + valorEntradas) - descuentoCompra;
 
-        //persiste la compra
-        return null;
+        funcion.get().getCompras().add(compra);
+        compra.setFuncion(funcion.get());
+        compra.setMedioPago(medioPago);
+        compra.setValorTotal(valorTotal);
+        cliente.get().getCompras().add(compra);
+        compra.setCliente(cliente.get());
+        //compra.getFecha(LocalDate.now());
+        //compra.setEntradas(entradas);
+
+        clienteRepo.save(cliente.get());
+        funcionRepo.save(funcion.get());
+        boletaRepo.saveAll(boletas);
+        compraConfiteriaRepo.saveAll(compraConfiterias);
+        Compra compraGuardada = compraRepo.save(compra);
+
+       // if (compraRepo.contarComprasCliente(cedulaCliente) == 0) {
+            //Optional<Cupon> cuponPrimerCompra = cuponRepo.findById(2);
+            //CuponCliente cuponCliente = CuponCliente.builder().cupon(cuponPrimerCompra).cliente(cliente).estado(EstadoCupon.SIN_USAR).build();
+            //cuponClienteRepo.save(cuponCliente);
+            //emailServicio.enviarEmail("Cupon primer compra", "Hola, has recibido un cupon del 10% por realizar tu primer compra, para obtenerlo ve al aiguiente enlace: ....", clienteCedula.getCorreo());
+        //}
+
+        //emailServicio.enviarEmail("Compra unicine", "Hola" + cliente.getNombre() + "has realizado una compra en unicine de los siguientes productos:" + compraGuardada.getCompraConfiterias() + "\n" + compraGuardada.getEntradas() + " \n" + compraGuardada.getFuncion() + "todo por un valor de $" + valorTotal, cliente.getCorreo());
+
+        return compraGuardada;
+
     }
 
     //------------------------------------ REDMIR CUPON -----------------------------------
+
+
+    @Override
+    public CuponCliente obtenerCuponSeleccionado(Cliente cliente,Integer codigo) throws Exception {
+
+        if(cliente.getCuponesCliente().isEmpty()){
+            throw new Exception("La lista de cupones esta vacia "+codigo);
+        }
+        for (CuponCliente cupon: cliente.getCuponesCliente()) {
+            if(cupon.getCodigo().equals(codigo)){
+                return cupon;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public boolean redimirCupon(Integer codigoCupon) throws Exception{
 

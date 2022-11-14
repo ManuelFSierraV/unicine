@@ -84,7 +84,7 @@ public class AdministradorServicioImpl implements AdministradorServicio{
         return ciudadRepo.findAll();
     }
     public boolean ciudadRepetida(String nombreCiudad){
-        return ciudadRepo.findByNombreCiudad(nombreCiudad).orElse(null)!= null;
+        return ciudadRepo.findByNombre(nombreCiudad).orElse(null)!= null;
     }
 
 
@@ -93,7 +93,7 @@ public class AdministradorServicioImpl implements AdministradorServicio{
 
         boolean administradorTeatrosExiste = AdministradorRepetido(administradorTeatro.getCodigo());
         if(administradorTeatrosExiste){
-            throw new Exception("La cedula para el administrador ya Existe");
+            throw new Exception("La codigo para el administrador ya Existe");
         }
         boolean administradorTeatrosExisteCorreo = AdministradorRepetidoCorreo(administradorTeatro.getEmail()) ;
         if(administradorTeatrosExisteCorreo){
@@ -147,7 +147,14 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     }
 
     @Override
-    public Pelicula crearPelicula(Pelicula pelicula) {
+    public Pelicula crearPelicula(Pelicula pelicula) throws Exception{
+
+        Optional<Pelicula> peliculaNueva = peliculaRepo.findByNombre(pelicula.getNombre());
+
+        if(peliculaNueva != null){
+            throw new Exception("La pelicula con nombre "+pelicula.getNombre()+" ya se encuentra registrada");
+        }
+
         return peliculaRepo.save(pelicula);
     }
 
@@ -188,8 +195,15 @@ public class AdministradorServicioImpl implements AdministradorServicio{
     }
 
     @Override
-    public Confiteria crearConfiteria(Confiteria confiteria) {
+    public Confiteria crearConfiteria(Confiteria confiteria) throws Exception{
+        Optional<Confiteria> confiteriaEncontrado = confiteriaRepo.findById(confiteria.getCodigo());
+
+        if(confiteriaEncontrado != null){
+            throw new Exception("Ya existe una confiteria con el codigo "+confiteria.getCodigo());
+        }
+
         return confiteriaRepo.save(confiteria);
+
     }
 
     @Override

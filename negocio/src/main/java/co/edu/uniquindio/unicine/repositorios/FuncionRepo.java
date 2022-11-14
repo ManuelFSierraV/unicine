@@ -28,8 +28,8 @@ public interface FuncionRepo extends JpaRepository<Funcion,Integer> {
     @Query("select f from Funcion f where f.sala.teatro.codigo = :codigoTeatro and f.compras is empty ")
     List<Funcion> funcionesSinCompra (Integer codigoTeatro);
 
-    @Query("select f from Funcion f where f.sala.teatro.codigo = :codigoTeatro and f.horario.fechaInicio < :fechaInicio or f.horario.fechaFin > :fechaInicio")
-    List<Funcion> funcionesTeatro (Integer codigoteatro, LocalDate fechaInicio, LocalDate fechaFin);
+    @Query("select f from Funcion f where f.sala.teatro.codigo = :codigoTeatro and f.horario.fechaInicio < :fechaInicio or f.horario.fechaFin > :fechaFin")
+    List<Funcion> funcionesTeatro (Integer codigoTeatro, LocalDate fechaInicio, LocalDate fechaFin);
 
     @Query("select funcion.sala from Funcion funcion where funcion.sala.codigo = :codigoSala")
     Optional<Funcion> buscarSalaPorHorario(Integer codigoSala);

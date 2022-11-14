@@ -23,7 +23,7 @@ public class Cupon implements Serializable {
 
     private String descripcion;
 
-    private String descuento;
+    private double descuento;
 
     private String estado;
 
@@ -32,7 +32,7 @@ public class Cupon implements Serializable {
     @OneToMany(mappedBy = "cupon")
     private List<CuponCliente> cuponClientes;
 
-    public Cupon(String descripcion, String descuento, String estado, LocalDateTime fechaVencimiento) {
+    public Cupon(String descripcion, double descuento, String estado, LocalDateTime fechaVencimiento) {
         this.descripcion = descripcion;
         this.descuento = descuento;
         this.estado = estado;

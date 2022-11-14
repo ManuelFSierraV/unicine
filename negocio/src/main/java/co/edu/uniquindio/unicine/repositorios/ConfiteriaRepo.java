@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ConfiteriaRepo extends JpaRepository<Confiteria,Integer> {
 
-    Optional<Confiteria> findByNombre(String nombreConfiteria);
+    Optional<Confiteria> findByNombreProducto(String nombreConfiteria);
 
 }

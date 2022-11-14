@@ -14,5 +14,5 @@ public interface CiudadRepo extends JpaRepository<Ciudad,Integer> {
     @Query("select c.codigo,c.nombre,count (t) from Ciudad c join c.teatros t group by c.codigo")
     List<Object[]> contarTeatros();
 
-    Optional<Ciudad> findByNombreCiudad(String nombre);
+    Optional<Ciudad> findByNombre(String nombre);
 }
