@@ -1,6 +1,7 @@
 package co.edu.uniquindio.unicine.repositorios;
 
 import co.edu.uniquindio.unicine.dto.HorarioSalaDto;
+import co.edu.uniquindio.unicine.dto.PeliculaFuncion;
 import co.edu.uniquindio.unicine.entidades.Genero;
 import co.edu.uniquindio.unicine.entidades.Pelicula;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +24,14 @@ public interface PeliculaRepo extends JpaRepository<Pelicula,Integer> {
     @Query("select pelicula from Pelicula pelicula where pelicula.nombre = :nombrePelicula")
     Pelicula buscarPeliculaPorNombre(String nombrePelicula);
 
-    @Query("select p from Pelicula p where p.estado = :estado")
-    List<Pelicula> obtenerPeliculasPorEstado(Boolean estado);
+    @Query("select new co.edu.uniquindio.unicine.dto.PeliculaFuncion(p,f) from Pelicula p left join p.funciones f where p.nombre like concat('%',:nombre,'%') ")
+    List<PeliculaFuncion> buscarFuncionPelicula(String nombre);
+
+    @Query("select distinct f.pelicula from Funcion f where f.sala.teatro.ciudad.codigo = :codigo and f.pelicula.estado = :estado")
+    List<Pelicula> obtenerPeliculasPorEstadoCiudad(Integer codigo, String estado);
+
+    @Query("select distinct f.pelicula from Funcion f where f.sala.teatro.ciudad.codigo = :codigo and f.pelicula.estado = :estado")
+    List<Pelicula> obtenerPeliculasPorEstado(String estado);
 
     @Query("select p from Pelicula p where p.genero = :genero")
     List<Pelicula> obtenerPeliculasPorGenero(Genero genero);

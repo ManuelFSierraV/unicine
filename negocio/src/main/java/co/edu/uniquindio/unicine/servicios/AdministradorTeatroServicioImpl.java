@@ -18,14 +18,16 @@ public class AdministradorTeatroServicioImpl implements AdministradorTeatroServi
     private final SalaRepo salaRepo;
     private final FuncionRepo funcionRepo;
     private final PeliculaRepo peliculaRepo;
+    private final DistribucionRepo distribucionRepo;
 
-    public AdministradorTeatroServicioImpl(AdministradorTeatroRepo administradorTeatroRepo, HorarioRepo horarioRepo,TeatroRepo teatroRepo,SalaRepo salaRepo, FuncionRepo funcionRepo,PeliculaRepo peliculaRepo) {
+    public AdministradorTeatroServicioImpl(AdministradorTeatroRepo administradorTeatroRepo, HorarioRepo horarioRepo, TeatroRepo teatroRepo, SalaRepo salaRepo, FuncionRepo funcionRepo, PeliculaRepo peliculaRepo, DistribucionRepo distribucionRepo) {
         this.administradorTeatroRepo = administradorTeatroRepo;
         this.horarioRepo = horarioRepo;
         this.teatroRepo = teatroRepo;
         this.salaRepo = salaRepo;
         this.funcionRepo = funcionRepo;
         this.peliculaRepo = peliculaRepo;
+        this.distribucionRepo = distribucionRepo;
     }
 
     @Override
@@ -242,4 +244,19 @@ public class AdministradorTeatroServicioImpl implements AdministradorTeatroServi
     public List<Sala> salas() {
         return salaRepo.findAll();
     }
+
+    @Override
+    public Distribucion crearDistribucion(Distribucion distribucion) {
+        return distribucionRepo.save(distribucion);
+    }
+
+    @Override
+    public Distribucion obtenerDistribucion(Integer codigoDistribucion) throws Exception {
+        Optional<Distribucion> distribucion = distribucionRepo.findById(codigoDistribucion);
+        if(distribucion.isEmpty()){
+            throw new Exception("No existe la distribucion con ese codigo");
+        }
+        return distribucion.get();
+    }
+
 }

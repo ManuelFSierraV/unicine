@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Setter
@@ -23,12 +24,15 @@ public class Pelicula implements Serializable {
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    private String urlImagen;
+    @ElementCollection
+    private Map<String,String> imagenes;
 
     private String urlTrailer;
 
+    @Lob
     private String sinopsis;
 
+    @Lob
     private String reparto;
 
     private String estado;
@@ -40,9 +44,8 @@ public class Pelicula implements Serializable {
     @OneToMany(mappedBy = "pelicula")
     private List<Funcion> funciones;
 
-    public Pelicula(String nombre, String urlImagen, String urlTrailer, String sinopsis, String reparto, String estado, List<Genero> genero) {
+    public Pelicula(String nombre, String urlTrailer, String sinopsis, String reparto, String estado, List<Genero> genero) {
         this.nombre = nombre;
-        this.urlImagen = urlImagen;
         this.urlTrailer = urlTrailer;
         this.sinopsis = sinopsis;
         this.reparto = reparto;

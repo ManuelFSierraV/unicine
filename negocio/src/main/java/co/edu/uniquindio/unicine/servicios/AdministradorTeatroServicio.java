@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface AdministradorTeatroServicio {
 
     //-------- Login -------
@@ -59,4 +58,10 @@ public interface AdministradorTeatroServicio {
     void eliminarSala (Integer codigoSala) throws Exception;
 
     List<Sala> salas ();
+
+    //--------- Distribucion -----------------
+
+    Distribucion crearDistribucion (Distribucion distribucion);
+
+    Distribucion obtenerDistribucion (Integer codigoDistribucion) throws Exception;
 }

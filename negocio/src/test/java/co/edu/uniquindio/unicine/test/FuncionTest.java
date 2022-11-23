@@ -80,7 +80,7 @@ public class FuncionTest {
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerFunciones(){
-        List<FuncionDto> listaFunciones = funcionRepo.listaFunciones(1);
+        List<Funcion> listaFunciones = funcionRepo.listaFunciones(1);
         listaFunciones.forEach(System.out::println);
     }
 

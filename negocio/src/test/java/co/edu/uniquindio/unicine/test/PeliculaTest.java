@@ -73,7 +73,7 @@ public class PeliculaTest {
     @Test
     @Sql("classpath:dataset.sql")
     public void obtenerPeliculasPorEstado() {
-        List<Pelicula> peliculas = peliculaRepo.obtenerPeliculasPorEstado(false);
+        List<Pelicula> peliculas = peliculaRepo.obtenerPeliculasPorEstado(1,"Cartelera");
         peliculas.forEach(System.out::println);
     }
 

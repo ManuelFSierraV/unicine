@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition template="/WEB-INF/template.xhtml">
+    <ui:define name="title">#{detallePeliculaBean.pelicula.nombre}</ui:define>
+    <ui:define name="contenido">
+        <div class="container">
+            <div class="row">
+                <div class="col-4 detalle_infoPelicula">
+                    <div class="shadow p-3">
+                        <img class="poster_pelicula" src="" alt="Poster Pelicula"/>
+                        <h4>Titulo de la Pelicula</h4>
+                        <p>peliculas.nombre</p>
+                        <h4>Reparto</h4>
+                        <p>peliculas.reparto</p>
+                        <h4>Sinopsis</h4>
+                        <p>peliculas.sinopsis</p>
+                        <h4>Genero</h4>
+                        <p>peliculas.genero</p>
+                    </div>
+                </div>
+                <div class="col-8 funciones_pelicula">
+                    <h:form action="">
+                        <h:panelGrid columns="3" cellpadding="5">
+
+                            <p:outputLabel for="ciudad_origen" value="Ciudad :"/>
+                            <p:selectOneMenu id="ciudad_origen" value="#{inicioBean.ciudad}" required="true" converter="#{ciudadConverter}">
+                                <f:selectItem itemLabel="Seleccione una Ciudad" noSelectionOption="true" itemValue="#{null}"/>
+                                <f:selectItems value="#{inicioBean.ciudades}" var="ciudad" itemLabel="#{ciudad.nombre}" itemValue="#{ciudad}"/>
+                            </p:selectOneMenu>
+                            <p:message for="ciudad_origen"/>
+                        </h:panelGrid>
+
+                        <p:commandButton value="Seleccionar ciudad" action="#{inicioBean.elegirCiudad}" icon="pi pi-check" update="@form, listas_peliculas" oncomplete="PF('dialogo_ciudad').hide()"/>
+                        <p:growl for="mensaje_bean" showDetail="true" />
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+
+</html>

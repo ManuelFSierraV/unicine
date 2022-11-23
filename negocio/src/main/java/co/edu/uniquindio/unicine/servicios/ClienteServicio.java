@@ -1,11 +1,11 @@
 package co.edu.uniquindio.unicine.servicios;
 
+import co.edu.uniquindio.unicine.dto.PeliculaFuncion;
 import co.edu.uniquindio.unicine.entidades.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface ClienteServicio {
 
     // ----- login -----
@@ -33,6 +33,12 @@ public interface ClienteServicio {
     List<Pelicula> buscarPeliculaPorNombre (String nombre) throws Exception;
 
     List<Pelicula> buscarPeliculaPorGenero (Genero genero) throws Exception;
+
+    List<Pelicula> buscarPeliculaPorEstadoCiudad (Integer codigoCiudad, String estado) throws Exception;
+
+    List<Pelicula> buscarPeliculaPorEstado (String estado) ;
+
+    List<PeliculaFuncion> listarFuncionesPelicula (String nombre) throws Exception;
 
     // ------- Realizar compra -------
 

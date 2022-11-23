@@ -1,13 +1,16 @@
 package co.edu.uniquindio.unicine.servicios;
 
+import co.edu.uniquindio.unicine.dto.PeliculaFuncion;
 import co.edu.uniquindio.unicine.entidades.*;
 import co.edu.uniquindio.unicine.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ClienteServicioImpl implements ClienteServicio{
 
     @Autowired
@@ -68,6 +71,33 @@ public class ClienteServicioImpl implements ClienteServicio{
             throw new Exception("La pelicula NO EXISTE");
         }
 
+        return peliculaGuardada;
+    }
+
+    @Override
+    public List<Pelicula> buscarPeliculaPorEstadoCiudad (Integer codigoCiudad, String estado) throws Exception {
+        List<Pelicula> peliculaGuardada = peliculaRepo.obtenerPeliculasPorEstadoCiudad(codigoCiudad,estado);
+
+        if(peliculaGuardada.isEmpty()){
+            throw new Exception("La pelicula NO EXISTE");
+        }
+
+        return peliculaGuardada;
+    }
+
+    @Override
+    public List<Pelicula> buscarPeliculaPorEstado(String estado) {
+        List<Pelicula> peliculaGuardada = peliculaRepo.obtenerPeliculasPorEstado(estado);
+        return peliculaGuardada;
+    }
+
+    @Override
+    public List<PeliculaFuncion> listarFuncionesPelicula(String nombre) throws Exception{
+        List<PeliculaFuncion> peliculaGuardada = peliculaRepo.buscarFuncionPelicula(nombre);
+
+        if(peliculaGuardada.isEmpty()){
+            throw new Exception("La pelicula No existe");
+        }
         return peliculaGuardada;
     }
 
